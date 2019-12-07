@@ -1,13 +1,33 @@
-FROM node:10-alpine
+FROM ubuntu:18.04
 
-LABEL       author="Arnaud LIER" maintainer="zeprofdecoding@gmail.com"
+MAINTAINER Arnaud LIER, <zeprofdecoding@gmail.com>
 
-RUN         apk add --no-cache --update libc6-compat ffmpeg \
-            && adduser -D -h /home/container container
+RUN apt update \
+    && apt upgrade -y \
+    && apt autoremove -y \
+    && apt autoclean \
+    && apt -y install curl software-properties-common locales git cmake \
+    && useradd -d /home/container -m container
 
-USER        container
-ENV         USER=container HOME=/home/container
-WORKDIR     /home/container
+    # Ensure UTF-8
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
-COPY        ./entrypoint.sh /entrypoint.sh
-CMD         ["/bin/ash", "/entrypoint.sh"]
+    # NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    && apt update \
+    && apt -y upgrade \
+    && apt -y install nodejs node-gyp \
+    && npm install discord.js node-opus opusscript \
+    && npm install sqlite3 --build-from-source
+
+USER container
+ENV  USER container
+ENV  HOME /home/container
+
+WORKDIR /home/container
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+CMD ["/bin/bash", "/entrypoint.sh"]
