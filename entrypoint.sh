@@ -1,0 +1,8 @@
+#!/bin/ash
+cd /home/container
+
+MODIFIED_STARTUP=`eval echo $(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')`
+
+# Run the Server
+npm install
+${MODIFIED_STARTUP}
