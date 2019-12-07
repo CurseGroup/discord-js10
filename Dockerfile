@@ -3,7 +3,7 @@ FROM node:10-alpine
 MAINTAINER Arnaud LIER, <zeprofdecoding@gmail.com>
 
 RUN apk add --no-cache --update libc6-compat ffmpeg \
-    && useradd -d /home/container -m container
+    && adduser -D -h /home/container container
 
     # Ensure UTF-8
 RUN locale-gen en_US.UTF-8
