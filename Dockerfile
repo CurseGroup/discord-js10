@@ -10,9 +10,9 @@ RUN apt update \
     && useradd -d /home/container -m container
 
     # Ensure UTF-8
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+RUN locale-gen fr_FR.UTF-8
+ENV LANG fr_FR.UTF-8
+ENV LC_ALL fr_FR.UTF-8
 
     # NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
